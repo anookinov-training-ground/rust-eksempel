@@ -35,11 +35,24 @@ impl Hei for &str {
     }
 }
 
+impl Hei for String {
+    fn hei(&self) {
+        println!("hei {}", self);
+    }
+}
+
 pub fn foo() {
     strlen("hello world"); // &'static str
     strlen(String::from("hei verden")); // String: AsRef<str>
 
     "J".hei();
+
+    for h in vec!["J", "Jon"] {
+        h.hei();
+    }
+
+    bar_slice(&["J", "Jon"]);
+    bar_slice(&[String::from("J"), String::from("Jon")]);
 }
 
 pub fn bar(h: impl Hei) {
@@ -52,4 +65,10 @@ pub fn bar2<H: Hei>(h: H) {
 
 pub fn bar_str(h: &str) {
     h.hei();
+}
+
+pub fn bar_slice(s: &[impl Hei]) {
+    for h in s {
+        h.hei();
+    }
 }
