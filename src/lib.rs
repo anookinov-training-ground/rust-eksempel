@@ -17,6 +17,14 @@ where
     s.as_ref().len()
 }
 
+pub fn bool_then<T>(b: bool, f: impl FnOnce() -> T) -> Option<T> {
+    if b {
+        Some(f())
+    } else {
+        None
+    }
+}
+
 pub fn foo() {
     strlen("hello world"); // &'static str
     strlen(String::from("hei verden")); // String: AsRef<str>
