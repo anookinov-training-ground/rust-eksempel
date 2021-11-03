@@ -29,6 +29,14 @@ pub fn strlen_dyn(s: &dyn AsRef<str>) -> usize {
     s.as_ref().len()
 }
 
+pub trait HeiAsRef: Hei + AsRef<str> {}
+
+pub fn baz(s: &dyn HeiAsRef) {
+    s.hei();
+    let s = s.as_ref();
+    s.len();
+}
+
 pub fn main() {
     let x = Box::new(String::from("hello"));
     let y: Box<dyn AsRef<str>> = x;
