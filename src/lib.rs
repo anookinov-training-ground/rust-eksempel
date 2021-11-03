@@ -197,6 +197,10 @@ impl<T> Extend<T> for MyVec<T> {
 //     let x = v.clone();
 // }
 
+pub fn it(v: &mut dyn Iterator<Item = bool>) {
+    let _ = v.next();
+}
+
 pub fn main() {
     let x = Box::new(String::from("hello"));
     let y: Box<dyn AsRef<str>> = x;
