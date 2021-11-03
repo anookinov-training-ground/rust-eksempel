@@ -192,6 +192,11 @@ impl<T> Extend<T> for MyVec<T> {
     // }
 }
 
+// fn clone(&self) -> Self
+// pub fn clone(v: &dyn Clone) {
+//     let x = v.clone();
+// }
+
 pub fn main() {
     let x = Box::new(String::from("hello"));
     let y: Box<dyn AsRef<str>> = x;
