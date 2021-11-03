@@ -201,6 +201,15 @@ pub fn it(v: &mut dyn Iterator<Item = bool>) {
     let _ = v.next();
 }
 
+pub fn drop(v: &mut dyn Drop) {
+    // when v goes out of scope, Drop::drop is called
+}
+
+pub fn say_hei_box(s: Box<dyn AsRef<str>>) {
+    // what happens when s goes out of scope?
+    // Drop Trait is implemented for trait object and available in vtable by default
+}
+
 pub fn main() {
     let x = Box::new(String::from("hello"));
     let y: Box<dyn AsRef<str>> = x;
