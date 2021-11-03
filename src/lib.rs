@@ -236,6 +236,29 @@ fn bar_fn(f: fn()) {} // function
 
 fn baz_fn(f: impl Fn()) {}
 
+// struct Wrapper<F: Fn()> {
+//     f: F,
+// }
+
+struct Wrapper {
+    f: Box<dyn Fn()>,
+}
+
+trait X {
+    fn foo(&self, f: impl Fn());
+}
+
+trait X2 {
+    fn foo<F: Fn()>(&self, f: F);
+}
+
+// object safe
+trait X3 {
+    fn foo(&self, f: &dyn Fn());
+}
+
+fn quox(x: &dyn X3) {}
+
 pub fn main() {
     let x = Box::new(String::from("hello"));
     let y: Box<dyn AsRef<str>> = x;
