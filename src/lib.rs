@@ -97,6 +97,7 @@ pub fn say_hei(s: &dyn Hei<Name = ()>) {
     // s.vtable.hei(s.pointer)
 
     // (dyn Hei)::weird();
+    // s::weird();
 }
 
 // struct Foo {
