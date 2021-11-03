@@ -160,6 +160,38 @@ pub fn baz(s: &dyn HeiAsRef) {
     s.len();
 }
 
+pub fn bool_then<T>(b: bool, f: impl FnOnce() -> T) -> Option<T> {
+    if b {
+        Some(f())
+    } else {
+        None
+    }
+}
+
+use std::iter::Extend;
+
+// pub fn add_true(v: &mut dyn Extend<bool>) {
+//     v.extend(std::iter::once(true));
+// }
+
+struct MyVec<T>(Vec<T>);
+
+impl<T> Extend<T> for MyVec<T> {
+    fn extend<I>(&mut self, iter: I)
+    where
+        I: IntoIterator<Item = T>,
+    {
+        // ...
+    }
+
+    // fn extend_hashmap_intoiter_bool(
+    //     &mut self,
+    //     iter: std::collection::hash_map::IntoIterator<bool>,
+    // ) {
+    //     // ...
+    // }
+}
+
 pub fn main() {
     let x = Box::new(String::from("hello"));
     let y: Box<dyn AsRef<str>> = x;
@@ -176,13 +208,5 @@ pub fn main() {
         say_hei(&"hello");
     } else {
         say_hei(&String::from("world"));
-    }
-}
-
-pub fn bool_then<T>(b: bool, f: impl FnOnce() -> T) -> Option<T> {
-    if b {
-        Some(f())
-    } else {
-        None
     }
 }
