@@ -210,6 +210,17 @@ pub fn say_hei_box(s: Box<dyn AsRef<str>>) {
     // Drop Trait is implemented for trait object and available in vtable by default
 }
 
+// dyn Trait -> * -> (*mut data, *mut vtable)
+// [u8]      -> * -> (*mut data, usize length)
+// str       -> * -> (*mut data, usize length)
+
+fn foo_u8(s: &[u8]) {}
+
+fn bar_u8() -> Box<[u8]> {
+    // [][..]
+    Box::new([]) as Box<[u8]>
+}
+
 pub fn main() {
     let x = Box::new(String::from("hello"));
     let y: Box<dyn AsRef<str>> = x;
