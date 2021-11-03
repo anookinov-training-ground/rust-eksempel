@@ -61,6 +61,14 @@ impl Hei for String {
     }
 }
 
+impl Hei for Box<dyn AsRef<str>> {
+    type Name = ();
+
+    fn hei(&self) {
+        println!("hei {}", self.as_ref().as_ref());
+    }
+}
+
 pub fn say_hei_static<H: Hei>(s: H) {
     s.hei();
 }
