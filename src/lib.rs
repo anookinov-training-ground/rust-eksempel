@@ -221,6 +221,14 @@ fn bar_u8() -> Box<[u8]> {
     Box::new([]) as Box<[u8]>
 }
 
+struct Foo {
+    f: bool,
+    x: bool,
+    t: [u8],
+}
+// &Foo (*Foo, length t)
+// Box<[u8]> != Vec<u8>
+
 pub fn main() {
     let x = Box::new(String::from("hello"));
     let y: Box<dyn AsRef<str>> = x;
