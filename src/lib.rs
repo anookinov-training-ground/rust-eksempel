@@ -29,10 +29,18 @@ pub fn strlen_dyn(s: &dyn AsRef<str>) -> usize {
     s.as_ref().len()
 }
 
-pub trait Hei {
+pub trait Hei // where
+//     Self: Sized,
+{
     type Name;
 
     fn hei(&self);
+
+    fn weird()
+    where
+        Self: Sized,
+    {
+    }
 }
 
 impl Hei for &str {
@@ -41,6 +49,8 @@ impl Hei for &str {
     fn hei(&self) {
         println!("hei {}", self);
     }
+
+    fn weird() {}
 }
 
 impl Hei for String {
@@ -85,6 +95,8 @@ pub fn say_hei(s: &dyn Hei<Name = ()>) {
     // }
     s.hei();
     // s.vtable.hei(s.pointer)
+
+    // (dyn Hei)::weird();
 }
 
 // struct Foo {
