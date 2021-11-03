@@ -228,6 +228,13 @@ struct Foo {
 }
 // &Foo (*Foo, length t)
 // Box<[u8]> != Vec<u8>
+// dyn Fn != fn
+
+fn foo_fn(f: &dyn Fn()) {} // wide pointer including data pointer and vtable
+
+fn bar_fn(f: fn()) {} // function
+
+fn baz_fn(f: impl Fn()) {}
 
 pub fn main() {
     let x = Box::new(String::from("hello"));
@@ -246,4 +253,17 @@ pub fn main() {
     } else {
         say_hei(&String::from("world"));
     }
+
+    let x = "Hello";
+    foo_fn(&|| {
+        let _ = &x;
+    });
+
+    // bar_fn(&|| {
+    //     let _ = &x;
+    // })
+
+    baz_fn(|| {
+        let _ = &x;
+    })
 }
