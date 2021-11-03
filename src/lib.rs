@@ -29,52 +29,23 @@ pub fn strlen_dyn(s: &dyn AsRef<str>) -> usize {
     s.as_ref().len()
 }
 
-pub trait HeiAsRef: Hei + AsRef<str> {}
-
-pub fn baz(s: &dyn HeiAsRef) {
-    s.hei();
-    let s = s.as_ref();
-    s.len();
-}
-
-pub fn main() {
-    let x = Box::new(String::from("hello"));
-    let y: Box<dyn AsRef<str>> = x;
-    strlen_dyn2(y);
-
-    let z: Box<dyn AsRef<str>> = Box::new(String::from("hello"));
-    strlen_dyn2(z);
-
-    let a: &dyn AsRef<str> = &"world";
-    strlen_dyn(a);
-
-    let random = 4; // read from the user
-    if random == 4 {
-        say_hei(&"hello");
-    } else {
-        say_hei(&String::from("world"));
-    }
-}
-
-pub fn bool_then<T>(b: bool, f: impl FnOnce() -> T) -> Option<T> {
-    if b {
-        Some(f())
-    } else {
-        None
-    }
-}
-
 pub trait Hei {
+    type Name;
+
     fn hei(&self);
 }
 
 impl Hei for &str {
+    type Name = ();
+
     fn hei(&self) {
         println!("hei {}", self);
     }
 }
 
 impl Hei for String {
+    type Name = ();
+
     fn hei(&self) {
         println!("hei {}", self);
     }
@@ -88,7 +59,7 @@ pub fn say_hei_static_str(s: &str) {
     s.hei(); // call compiled static assembly code
 }
 
-pub fn say_hei(s: &dyn Hei) {
+pub fn say_hei(s: &dyn Hei<Name = ()>) {
     // &dyn Hei
     // stored in &
     //  1. a pointer to the actual, concrete, implementing type
@@ -159,3 +130,38 @@ pub fn bar_slice(s: &[impl Hei]) {
 //         h.hei();
 //     }
 // }
+
+pub trait HeiAsRef: Hei<Name = ()> + AsRef<str> {}
+
+pub fn baz(s: &dyn HeiAsRef) {
+    s.hei();
+    let s = s.as_ref();
+    s.len();
+}
+
+pub fn main() {
+    let x = Box::new(String::from("hello"));
+    let y: Box<dyn AsRef<str>> = x;
+    strlen_dyn2(y);
+
+    let z: Box<dyn AsRef<str>> = Box::new(String::from("hello"));
+    strlen_dyn2(z);
+
+    let a: &dyn AsRef<str> = &"world";
+    strlen_dyn(a);
+
+    let random = 4; // read from the user
+    if random == 4 {
+        say_hei(&"hello");
+    } else {
+        say_hei(&String::from("world"));
+    }
+}
+
+pub fn bool_then<T>(b: bool, f: impl FnOnce() -> T) -> Option<T> {
+    if b {
+        Some(f())
+    } else {
+        None
+    }
+}
